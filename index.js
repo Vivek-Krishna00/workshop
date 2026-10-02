@@ -1,19 +1,19 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const productRoutes = require('./routes/productRoutes');
+const catalogRoutes = require('./routes/productRoutes');
 
 dotenv.config();
 
-const app = express();
+const application = express();
 
-app.use(express.json());
+application.use(express.json());
 
 // Routes
-app.use('/products', productRoutes);
+application.use('/products', catalogRoutes);
 
-const port = process.env.PORT || 3005;
-app.listen(port, () => {
-    console.log(`Server running http://localhost:${port}/`);
+const serverPort = process.env.PORT || 3005;
+application.listen(serverPort, () => {
+    console.log(`Server running http://localhost:${serverPort}/`);
 });
 
-module.exports = app;
+module.exports = application;

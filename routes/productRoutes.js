@@ -1,17 +1,17 @@
 const express = require('express');
-const router = express.Router();
-const productController = require('../controllers/productController');
+const catalogRouter = express.Router();
+const catalogController = require('../controllers/productController');
 const { cacheMiddleware, itemCacheMiddleware } = require('../middleware/cacheMiddleware');
 
-router.get('/', cacheMiddleware, productController.getProducts);
-router.get('/:id', itemCacheMiddleware, productController.getProductById);
+catalogRouter.get('/', cacheMiddleware, catalogController.getProducts);
+catalogRouter.get('/:id', itemCacheMiddleware, catalogController.getProductById);
 
-router.post('/', productController.createProduct);
+catalogRouter.post('/', catalogController.createProduct);
 
-router.put('/:id', productController.updateProduct);
+catalogRouter.put('/:id', catalogController.updateProduct);
 
-router.patch('/:id', productController.patchProduct);
+catalogRouter.patch('/:id', catalogController.patchProduct);
 
-router.delete('/:id', productController.deleteProduct);
+catalogRouter.delete('/:id', catalogController.deleteProduct);
 
-module.exports = router;
+module.exports = catalogRouter;

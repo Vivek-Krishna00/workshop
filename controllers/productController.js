@@ -1,95 +1,95 @@
-const productService = require('../services/productService');
+const catalogService = require('../services/productService');
 const { clearCache } = require('../middleware/cacheMiddleware');
 
-const getProducts = async (req, res) => {
+const getProducts = async (request, response) => {
     try {
-        const products = await productService.getAllProducts();
-        res.json(products);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        const productList = await catalogService.getAllProducts();
+        response.json(productList);
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Server Error');
     }
 };
 
-const getProductById = async (req, res) => {
+const getProductById = async (request, response) => {
     try {
-        const id = Number(req.params.id);
-        if (isNaN(id)) {
-            return res.status(400).json({ message: 'Invalid product ID' });
+        const productId = Number(request.params.id);
+        if (isNaN(productId)) {
+            return response.status(400).json({ message: 'Invalid product ID' });
         }
-        const product = await productService.getProductById(id);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+        const productRecord = await catalogService.getProductById(productId);
+        if (!productRecord) {
+            return response.status(404).json({ message: 'Product not found' });
         }
-        res.json(product);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        response.json(productRecord);
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Server Error');
     }
 };
 
-const createProduct = async (req, res) => {
+const createProduct = async (request, response) => {
     try {
-        const newProduct = await productService.createProduct(req.body);
+        const createdProduct = await catalogService.createProduct(request.body);
         clearCache();
-        res.status(201).json(newProduct);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        response.status(201).json(createdProduct);
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Server Error');
     }
 };
 
-const updateProduct = async (req, res) => {
+const updateProduct = async (request, response) => {
     try {
-        const id = Number(req.params.id);
-        if (isNaN(id)) {
-            return res.status(400).json({ message: 'Invalid product ID' });
+        const productId = Number(request.params.id);
+        if (isNaN(productId)) {
+            return response.status(400).json({ message: 'Invalid product ID' });
         }
-        const updated = await productService.updateProduct(id, req.body);
-        if (!updated) {
-            return res.status(404).json({ message: 'Product not found' });
+        const updatedProduct = await catalogService.updateProduct(productId, request.body);
+        if (!updatedProduct) {
+            return response.status(404).json({ message: 'Product not found' });
         }
-        clearCache(id);
-        res.json(updated);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        clearCache(productId);
+        response.json(updatedProduct);
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Server Error');
     }
 };
 
-const patchProduct = async (req, res) => {
+const patchProduct = async (request, response) => {
     try {
-        const id = Number(req.params.id);
-        if (isNaN(id)) {
-            return res.status(400).json({ message: 'Invalid product ID' });
+        const productId = Number(request.params.id);
+        if (isNaN(productId)) {
+            return response.status(400).json({ message: 'Invalid product ID' });
         }
-        const patched = await productService.patchProduct(id, req.body);
-        if (!patched) {
-            return res.status(404).json({ message: 'Product not found' });
+        const patchedProduct = await catalogService.patchProduct(productId, request.body);
+        if (!patchedProduct) {
+            return response.status(404).json({ message: 'Product not found' });
         }
-        clearCache(id); 
-        res.json(patched);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        clearCache(productId);
+        response.json(patchedProduct);
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Server Error');
     }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (request, response) => {
     try {
-        const id = Number(req.params.id);
-        if (isNaN(id)) {
-            return res.status(400).json({ message: 'Invalid product ID' });
+        const productId = Number(request.params.id);
+        if (isNaN(productId)) {
+            return response.status(400).json({ message: 'Invalid product ID' });
         }
-        const deleted = await productService.deleteProduct(id);
-        if (!deleted) {
-            return res.status(404).json({ message: 'Product not found' });
+        const deletedProduct = await catalogService.deleteProduct(productId);
+        if (!deletedProduct) {
+            return response.status(404).json({ message: 'Product not found' });
         }
-        clearCache(id); 
-        res.json({ message: 'Product deleted successfully', product: deleted });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+        clearCache(productId);
+        response.json({ message: 'Product deleted successfully', product: deletedProduct });
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Server Error');
     }
 };
 
